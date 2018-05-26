@@ -14,8 +14,15 @@
  */
 #include "FS.h"
 #include "SD.h"
+#include "BluetoothSerial.h"
 
-int in;
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
+#endif
+
+BluetoothSerial SerialBT;
+
+int in = 0;
 String filename, dirname, temp;
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels)
@@ -110,9 +117,43 @@ void deleteFile(fs::FS &fs, const char * path)
     }
 }
 
+void getFileName()
+{
+  Serial.println("");
+  Serial.println("");
+  //remove redundant chars
+  while(in != 0)
+  in = SerialBT.read();
+  Serial.println("Unwanted characters removed");
+  Serial.println("Enter the name of the file");
+  //wait for the input
+  while((in = SerialBT.read()) == 0);
+  //append first character read
+  filename = char(in);
+  while(SerialBT.available())
+  filename += char(SerialBT.read());            
+}
+
+void getContent()
+{
+  Serial.println("");
+  //remove redundant chars
+  while(in != 0)
+  in = SerialBT.read();
+  //Serial.println("Unwanted characters removed");
+  Serial.println("Enter the content of the file");
+  //wait for the input
+  while((in = SerialBT.read()) == 0);
+  //append first character read
+  temp = char(in);
+  while(SerialBT.available())
+  temp += char(SerialBT.read());            
+}
+
 void setup()
 {
     Serial.begin(115200);
+    SerialBT.begin("ESP32test");
     if(!SD.begin())
     {
         Serial.println("Card Mount Failed");
@@ -154,31 +195,24 @@ void loop()
     Serial.println("------------------------------------------------------------------------");
     Serial.print("Enter 1 to List contents of this directory\nEnter 2 to Create a file\nEnter 3 to Read from a file\nEnter 4 to Delete a file\nEnter 5 to see SDcard memory usage\n");
     Serial.println("------------------------------------------------------------------------");
-
-    in = 5;//Serial.read();
-
-    switch(in)
+    while(in == 0)
+    {
+    in = SerialBT.read();
+    delay(2000);
+    }
+    filename = "";
+    switch(in-0x30)
     {
       case 1: listDir(SD, "/", 0);
               break;
-      case 2: Serial.println("");
-              Serial.println("");
-              Serial.println("Enter the name of the file");
-              filename = Serial.read();
-              Serial.println("Enter the content of the file");
-              temp = Serial.read();
+      case 2: getFileName();
+              getContent();
               writeFile(SD, (char *)filename.c_str(), (char *)temp.c_str());
               break;
-      case 3: Serial.println("");
-              Serial.println("");
-              Serial.println("Enter the name of the file");
-              filename = Serial.read();
+      case 3: getFileName();
               readFile(SD, (char *)filename.c_str());
               break;
-      case 4: Serial.println("");
-              Serial.println("");
-              Serial.println("Enter the name of the file");
-              filename = Serial.read();
+      case 4: getFileName();
               deleteFile(SD, (char *)filename.c_str());
               break;
       case 5: Serial.printf("Total space: %lluMB\n", SD.totalBytes() / (1024 * 1024));
@@ -187,6 +221,10 @@ void loop()
       default:Serial.println("Enter a valid choice");
               break;
     }
-    while(1)
-    delay(2000);
+    //remove redundant chars
+    while(in != 0)
+    {
+    in = SerialBT.read();
+    }
+    delay(5000);
 }
