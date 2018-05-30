@@ -5,9 +5,9 @@
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
-const char* ssid = "SSID Name";
-const char* password = "Password";
-int led = 16;
+const char* ssid = "#1@";
+const char* password = "unxh4995";
+int led = 2;
 int flash = 0;
 
 
@@ -15,8 +15,8 @@ int flash = 0;
 
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883                   // use 8883 for SSL
-#define AIO_USERNAME    "username"
-#define AIO_KEY         "KEY"
+#define AIO_USERNAME    "simha183"
+#define AIO_KEY         "773f7517c18345029a06dc314e8f07e4"
 
 
 bool flag =0; // For selecting Mode
@@ -32,14 +32,13 @@ Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, AIO_SERVERPORT, MQTT_USERNAME, M
 
 
 
-const char Relay2[] PROGMEM = AIO_USERNAME "/feeds/Mode";
+const char Relay2[] PROGMEM = AIO_USERNAME "/feeds/mqtt";
 Adafruit_MQTT_Subscribe Mode = Adafruit_MQTT_Subscribe(&mqtt, Relay2);
 /*************************** Sketch Code ************************************/
 
 // Bug workaround for Arduino 1.6.6, it seems to need a function declaration
 // for some reason (only affects ESP8266, likely an arduino-builder bug).
 void MQTT_connect();
-
 
 void setup() 
 {
@@ -110,12 +109,14 @@ Adafruit_MQTT_Subscribe *subscription;
       Serial.print(F("Got_Mode: "));
       Serial.println((char *)Mode.lastread);
       uint16_t num = atoi((char *)Mode.lastread);
-      flag= num;
+      if((char *)Mode.lastread == "ON")
+      flag= 1;
+  Serial.println(flag);
     }
   }
 
   
-  if(flag==1) // OTA mode
+  if(flag== 0)
   ArduinoOTA.handle();
   
   else // normal mode

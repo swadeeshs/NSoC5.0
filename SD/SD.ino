@@ -203,7 +203,8 @@ void loop()
     filename = "";
     switch(in-0x30)
     {
-      case 1: listDir(SD, "/", 0);
+      case 1: getFileName();
+              listDir(SD, (char *)filename.c_str(), 0);
               break;
       case 2: getFileName();
               getContent();
