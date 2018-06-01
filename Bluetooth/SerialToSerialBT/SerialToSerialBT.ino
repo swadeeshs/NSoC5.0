@@ -4,13 +4,14 @@
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
+int input = 32;
+
 BluetoothSerial SerialBT;
 DHT dht(input, DHT11); //Initializing the DHT sensor type with this code
-int i,j;
 
 void BT_Print(String x)
 {
-  for(i = 0; i < x.length(); i++)
+  for(int i = 0; i < x.length(); i++)
   {
     SerialBT.write(x[i]);
     delay(20);

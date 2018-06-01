@@ -7,8 +7,8 @@
 
 #define DBG_OUTPUT_PORT Serial
 
-const char* ssid = "mi4";
-const char* password = "12344321";
+const char* ssid = "samhita";
+const char* password = "samtippu";
 const char* host = "smarthome";
 
 WebServer server(80);
@@ -122,7 +122,7 @@ void handleLogin()
 void setup()
 {
   DBG_OUTPUT_PORT.begin(115200);
-  DBG_OUTPUT_PORT.setDebu`gOutput(true);
+  DBG_OUTPUT_PORT.setDebugOutput(true);
   DBG_OUTPUT_PORT.print("\n");
   if(!checkSD())
    return;
