@@ -7,9 +7,9 @@
 
 #define DBG_OUTPUT_PORT Serial
 
-const char* ssid = "NETGEAR94";
-const char* password = "1234567890";
-const char* host = "esp8266sd";
+const char* ssid = "ssid";
+const char* password = "password";
+const char* host = "esp32sdweb";
 
 WebServer server(80);
 

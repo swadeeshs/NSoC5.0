@@ -5,8 +5,8 @@
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 
-const char* ssid = "#1@";
-const char* password = "unxh4995";
+const char* ssid = "ssid";
+const char* password = "password";
 int led = 2;
 int flash = 0;
 
@@ -15,8 +15,8 @@ int flash = 0;
 
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883                   // use 8883 for SSL
-#define AIO_USERNAME    "simha183"
-#define AIO_KEY         "773f7517c18345029a06dc314e8f07e4"
+#define AIO_USERNAME    "AIO_USERNAME"
+#define AIO_KEY         "AIO_KEY"
 
 
 bool flag =0; // For selecting Mode

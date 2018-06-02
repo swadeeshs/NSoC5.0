@@ -7,8 +7,8 @@
 
 #define DBG_OUTPUT_PORT Serial
 
-const char* ssid = "samhita";
-const char* password = "samtippu";
+const char* ssid = "ssid";
+const char* password = "password";
 const char* host = "smarthome";
 
 WebServer server(80);

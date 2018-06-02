@@ -3,8 +3,8 @@
 #include "mainPage.h">
 #include<WebServer.h>
 
-char *ssid =  "#1@"; 
-char *pass =  "unxh4995";
+char *ssid =  "ssid"; 
+char *pass =  "password";
 
 WebServer server(80);
 

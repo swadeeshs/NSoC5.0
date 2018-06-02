@@ -14,7 +14,7 @@ void loop()
 {
   float h = dht.readHumidity(); //Reading Humidity values from DHT11
   float t = dht.readTemperature(); //Reading Temperature values from DHT11
-  Serial.println("Temperature:");
+  Serial.print("Temperature:");
   Serial.println(t);
   Serial.print("Humidity:");
   Serial.println(h);
